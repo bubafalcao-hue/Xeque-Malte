@@ -1,0 +1,112 @@
+/* Paleta 60/30/10: preto domina, marrom sustenta, amarelo só chama atenção. */
+:root {
+  --preto: #0d0b09;
+  --marrom: #4a3220;
+  --marrom-claro: #6b4a30;
+  --amarelo: #feb203; /* mesmo amarelo da logo */
+  --texto: #f3ead8;
+  --texto-suave: #c9bca3;
+  --erro: #ff9b8a;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--preto);
+  color: var(--texto);
+  font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+h1, h2 { font-family: "Iowan Old Style", Palatino, Georgia, serif; line-height: 1.2; margin: 0 0 .5rem; }
+h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); }
+h2 { font-size: 1.4rem; }
+a { color: var(--amarelo); }
+:focus-visible { outline: 3px solid var(--amarelo); outline-offset: 2px; }
+.lead { color: var(--texto-suave); margin: 0 0 1.5rem; }
+
+.pular { position: absolute; left: -999px; }
+.pular:focus { left: 8px; top: 8px; background: var(--amarelo); color: var(--preto); padding: 8px 12px; z-index: 10; }
+
+/* Cabeçalho */
+.topo {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 14px 20px; background: var(--preto); border-bottom: 2px solid var(--marrom);
+}
+.marca { display: block; line-height: 0; border-radius: 4px; }
+.marca img { display: block; height: 44px; width: auto; }
+#nav { display: flex; align-items: center; gap: 20px; }
+#nav a, .link { color: var(--texto); text-decoration: none; background: none; border: 0; font: inherit; cursor: pointer; padding: 4px 0; }
+#nav a:hover, .link:hover { color: var(--amarelo); }
+#nav a[aria-current="page"] { color: var(--amarelo); border-bottom: 2px solid var(--amarelo); }
+
+main#view { max-width: 1000px; margin: 0 auto; padding: 32px 20px 64px; }
+
+/* Dashboard */
+.fases { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.cartao { background: var(--marrom); border-radius: 10px; padding: 24px; }
+.cartao:hover { background: var(--marrom-claro); }
+.cartao p { color: var(--texto-suave); margin: 0 0 1rem; }
+.glifo { display: block; font-size: 3.4rem; line-height: 1; color: var(--amarelo); margin-bottom: .5rem; }
+.temas { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.temas a {
+  display: block; padding: 10px 14px; border-radius: 6px; background: var(--preto);
+  color: var(--texto); text-decoration: none;
+}
+.temas a:hover { color: var(--amarelo); }
+
+/* Cartão inteiro clicável: o link do título estica sobre o cartão */
+.cartao { position: relative; transition: background .15s, transform .15s; }
+.cartao:hover { transform: translateY(-2px); }
+.cartao h2 a { color: var(--texto); text-decoration: none; }
+.cartao h2 a::after { content: ""; position: absolute; inset: 0; border-radius: 10px; }
+.cartao:hover h2 a, .cartao h2 a:focus-visible { color: var(--amarelo); }
+.cartao h2 a:focus-visible { outline: none; }
+.cartao h2 a:focus-visible::after { outline: 3px solid var(--amarelo); outline-offset: 2px; }
+.temas a { position: relative; z-index: 1; }
+
+/* Subunidade */
+.trilha { color: var(--texto-suave); font-size: .95rem; margin: 0 0 .75rem; }
+.pilulas { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 1.5rem; }
+.pilulas a { padding: 6px 14px; border-radius: 999px; border: 1px solid var(--marrom-claro); color: var(--texto); text-decoration: none; }
+.pilulas a[aria-current="page"] { background: var(--amarelo); border-color: var(--amarelo); color: var(--preto); font-weight: 700; }
+.texto { max-width: 68ch; }
+.fontes { padding-left: 1.2rem; }
+.fontes li { margin: .3rem 0; }
+
+/* Login */
+body.login { display: grid; place-items: center; min-height: 100vh; padding: 20px; }
+.login-card { width: 100%; max-width: 420px; background: var(--marrom); border-radius: 10px; overflow: hidden; }
+.tabuleiro { height: 48px; background: repeating-conic-gradient(var(--preto) 0 25%, var(--marrom-claro) 0 50%) 0 0 / 48px 48px; }
+.login-corpo { padding: 24px; text-align: center; }
+.login-corpo h1 { margin: 0 0 .5rem; }
+.logo-login { display: block; width: 100%; max-width: 260px; height: auto; margin: 0 auto; }
+.login-corpo label, .login-corpo .msg, .login-corpo .aviso { text-align: left; }
+.abas { display: flex; gap: 8px; margin: 0 0 1rem; }
+.abas button {
+  flex: 1; padding: 8px; border-radius: 6px; border: 1px solid var(--marrom-claro);
+  background: transparent; color: var(--texto); font: inherit; cursor: pointer;
+}
+.abas button[aria-pressed="true"] { background: var(--preto); border-color: var(--preto); font-weight: 700; }
+label { display: block; margin: 0 0 1rem; color: var(--texto-suave); font-size: .95rem; }
+input {
+  display: block; width: 100%; margin-top: 4px; padding: 10px 12px; border-radius: 6px;
+  border: 1px solid var(--marrom-claro); background: var(--preto); color: var(--texto); font: inherit;
+}
+.botao {
+  width: 100%; padding: 12px; border: 0; border-radius: 6px; cursor: pointer;
+  background: var(--amarelo); color: var(--preto); font: 700 1rem system-ui, sans-serif;
+}
+.botao:disabled { opacity: .6; cursor: wait; }
+.msg { min-height: 1.4em; margin: 0 0 .75rem; color: var(--erro); font-size: .95rem; }
+.msg.ok { color: var(--amarelo); }
+.aviso { background: var(--preto); border-left: 4px solid var(--amarelo); padding: 8px 12px; font-size: .9rem; color: var(--texto-suave); }
+
+@media (max-width: 480px) {
+  .topo { padding: 10px 14px; }
+  .marca img { height: 38px; }
+  #nav { gap: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .cartao { transition: none; }
+  .cartao:hover { transform: none; }
+}
