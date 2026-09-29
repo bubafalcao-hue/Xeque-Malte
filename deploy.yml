@@ -30,7 +30,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Aponte aqui para a sua pasta secundária
-          path: './'
+          path: './xeque-malte-esqueleto2.0'
 
       - name: Deploy to GitHub Pages
         id: deployment
