@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrar · Xeque-Malte</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="login">
+<main class="login-card">
+  <div class="tabuleiro" aria-hidden="true"></div>
+  <div class="login-corpo">
+    <h1><img class="logo-login" src="logo.png" alt="Xeque-Malte" width="535" height="220"></h1>
+    <p class="lead">Estude abertura, meio-jogo e finais.</p>
+    <p id="demo" class="aviso" hidden>Modo demonstração: nada é enviado a um servidor. Preencha config.js para usar o banco.</p>
+    <div class="abas" role="group" aria-label="Escolha uma opção">
+      <button type="button" id="aba-entrar" aria-pressed="true">Entrar</button>
+      <button type="button" id="aba-criar" aria-pressed="false">Criar conta</button>
+    </div>
+    <form id="form" novalidate>
+      <label>E-mail<input type="email" id="email" autocomplete="email" required></label>
+      <label>Senha<input type="password" id="senha" autocomplete="current-password" minlength="6" required></label>
+      <p id="msg" role="alert" class="msg"></p>
+      <button type="submit" class="botao" id="enviar">Entrar</button>
+    </form>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="api.js"></script>
+<script>
+(function () {
+  var $ = function (i) { return document.getElementById(i); };
+  var modo = "entrar";
+
+  XM.getUser().then(function (u) {
+    if (u) location.replace("app.html");
+  });
+  if (XM.demo) $("demo").hidden = false;
+
+  function setModo(m) {
+    modo = m;
+    $("aba-entrar").setAttribute("aria-pressed", String(m === "entrar"));
+    $("aba-criar").setAttribute("aria-pressed", String(m === "criar"));
+    $("enviar").textContent = m === "entrar" ? "Entrar" : "Criar conta";
+    $("senha").autocomplete = m === "entrar" ? "current-password" : "new-password";
+    $("msg").textContent = "";
+  }
+  $("aba-entrar").addEventListener("click", function () { setModo("entrar"); });
+  $("aba-criar").addEventListener("click", function () { setModo("criar"); });
+
+  $("form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var email = $("email").value.trim(), senha = $("senha").value, msg = $("msg");
+    msg.className = "msg";
+    if (!/^\S+@\S+\.\S+$/.test(email)) { msg.textContent = "Digite um e-mail válido."; return; }
+    if (senha.length < 6) { msg.textContent = "A senha precisa ter pelo menos 6 caracteres."; return; }
+    $("enviar").disabled = true;
+    (modo === "entrar" ? XM.signIn(email, senha) : XM.signUp(email, senha))
+      .then(function (r) {
+        if (r && r.confirmar) {
+          setModo("entrar");
+          msg.className = "msg ok";
+          msg.textContent = "Conta criada. Confirme pelo link enviado ao seu e-mail e depois entre.";
+          $("enviar").disabled = false;
+          return;
+        }
+        location.replace("app.html");
+      })
+      .catch(function (err) {
+        msg.textContent = err.message;
+        $("enviar").disabled = false;
+      });
+  });
+})();
+</script>
+</body>
+</html>
